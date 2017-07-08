@@ -36,6 +36,7 @@ M = { # months
 	11: 'Nov.',
 	12: 'Dec.'
 }
+USR_AGENT = "DelayIT - Post Scheduler by /u/Hax0rDoge - v0.1"
 
 # functions										------------------------
 # https://alexanderle.com/blog/2011/send-sms-python.html
@@ -69,7 +70,7 @@ while i < 1:
 	#	client_id=,
 	#	client_secret='',
 	#	password='',
-	#	user_agent='',
+	#	user_agent=USER_AGENT,
 	#	usernmae=''
 	#	)
 	i = i+1
