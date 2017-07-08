@@ -1,6 +1,11 @@
 # OS Files
 .DS_Store
 
+# Tmp Ignores
+accounts.json
+posts.json
+sms.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
