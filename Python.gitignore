@@ -1,5 +1,5 @@
 # OS Files
-.DS_Store
+*.DS_Store
 
 # Tmp Ignores
 accounts.json
