@@ -5,8 +5,10 @@ import praw as r
 import json as j
 import smtplib as s
 import time as t
+from datetime import datetime as d
 
 # variables										------------------------
+USER_AGENT = "DelayIT - Post Scheduler by /u/Hax0rDoge - v0.1"
 G = { # g-mail info
 	"url":	"smtp.gmail.com",
 	"port":	587
@@ -36,49 +38,45 @@ M = { # months
 	11: 'Nov.',
 	12: 'Dec.'
 }
-USR_AGENT = "DelayIT - Post Scheduler by /u/Hax0rDoge - v0.1"
 
 # functions										------------------------
 # https://alexanderle.com/blog/2011/send-sms-python.html
 # https://stackoverflow.com/questions/26852128/smtpauthenticationerror-when-sending-mail-using-gmail-and-python
 def sms(msg):
+	# load sms info
 	sms = j.loads(open("sms.json",'r').read())
 
+	# contimue if enabled
 	if sms["enabled"] == "yes":
-		to = str(sms["number"]) + S[sms["service"]]
-
-		print(to)
-
+		# establish connection and send out msg
 		server = s.SMTP(G["url"],G["port"])
 		server.starttls()
 		server.login(sms["user"],sms["pass"])
-		server.sendmail("",to,msg)
+		server.sendmail("",str(sms["number"]) + S[sms["service"]],msg)
 
 # inf loop										------------------------
-i = 0
-while i < 1:
-	#accounts = j.loads(open("accounts.json",'r').read())
+k = 0
+while k < 1:
+	accounts = j.loads(open("accounts.json",'r').read())
 	posts = j.loads(open("posts.json",'r').read())
-	
+	now = d.now().strftime("%Y %m %d %H:%M")
 
-	#for post in posts:
-	#	if post["status"] == "waiting":
+	for i in range(len(posts)):
+		postTime = d.strptime(posts[i]["date"],"%Y %m %d %H:%M")
+		postTime = postTime.strftime("%Y %m %d %H:%M")
+		if posts[i]["status"] == "waiting": #and postTime == now:
+			reddit = r.Reddit(
+				client_id=accounts[posts[i]["account"]]["id"],
+				client_secret=accounts[posts[i]["account"]]["secret"],
+				password=accounts[posts[i]["account"]]["pass"],
+				user_agent=USER_AGENT,
+				usernmae=accounts[posts[i]["account"]]["user"]
+				)
+			print(reddit)
+			if 0 == "success":
+				posts[i]["status"] = "posted"
+				j.dump(posts, indent=4)
 	#sms("about to post")
-			
 
-	#reddit = r.Reddit(
-	#	client_id=,
-	#	client_secret='',
-	#	password='',
-	#	user_agent=USER_AGENT,
-	#	usernmae=''
-	#	)
-	i = i+1
+	k = k+1
 	t.sleep(1)
-
-
-
-
-
-
-
